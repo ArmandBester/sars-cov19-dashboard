@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 import plotly.express as px
 #from jupyter_dash import JupyterDash
 import dash
