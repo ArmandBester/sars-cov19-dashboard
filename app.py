@@ -13,15 +13,17 @@ import plotly.graph_objects as go
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-
+#source:
+# https://github.com/CSSEGISandData/COVID-19.git
 
 default = ['South Africa', 'United Kingdom', 'Germany', 'Singapore', 'Australia', 'Italy',
         'Japan', 'Sweden', 'New Zealand', "Afghanistan"]
 
+source = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
 
 def data_prep():
 
-    df = pd.read_csv('time_series_covid19_confirmed_global.csv')
+    df = pd.read_csv(source)
 
     countries = df['Country/Region'].unique()
 
