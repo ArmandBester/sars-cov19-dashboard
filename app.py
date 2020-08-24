@@ -76,12 +76,12 @@ app.layout = html.Div(children=[
     ),
 
     # Output figures
-    ## Cumulative
-    dcc.Graph(id='cumulative'),
     ## Daily New
     dcc.Graph(id='Daily_new'),
     ## Delivative
     dcc.Graph(id='d1'),
+    ## Cumulative
+    dcc.Graph(id='cumulative'),
 
     html.Br()
 ])
