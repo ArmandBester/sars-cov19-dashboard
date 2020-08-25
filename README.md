@@ -4,7 +4,7 @@
 
 Due to the nature of collecting and testing samples and reporting cases the data is very noisy. We can use a filter to smooth this.
 
-The filter used here was introduced by Savitzky and  Golay in 1964 in there paper published in Analytical chemistry (1).  This filter fits low order polynomials over as sliding windows of the time series data using least squares regression.  Apart from it's application to extract signal from noise it also offers easy access to the derivatives.
+The filter used here was introduced by Savitzky and  Golay in 1964 in there paper published in Analytical chemistry (1).  This filter fits low order polynomials over sliding windows of the time series data using least squares regression.  Apart from it's application to extract signal from noise it also offers easy access to the derivatives.
 
 
 
