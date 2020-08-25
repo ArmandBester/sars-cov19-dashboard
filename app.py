@@ -3,6 +3,7 @@ import plotly.express as px
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import pandas as pd
 import numpy as np
@@ -16,10 +17,13 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 #source:
 # https://github.com/CSSEGISandData/COVID-19.git
 
-default = ['South Africa', 'United Kingdom', 'Germany', 'Singapore', 'Australia', 'Italy',
-        'Japan', 'Sweden', 'New Zealand', "Afghanistan"]
+default = ['South Africa', 'United Kingdom', 'Germany', 'Italy']
 
 source = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+
+mkdwn = open('README.md').read()
+
+
 
 def data_prep():
 
@@ -52,39 +56,65 @@ def data_prep():
 # prep the data
 newDf, countries, = data_prep()
 
-# create soem colours
+# create some colours
 colors = px.colors.qualitative.Bold
 
 # Build App
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app.title = 'COVID19 dash'
 
-#####################################################################################
 ## Layout
+#####################################################################################
 app.layout = html.Div(children=[
+    dcc.Tabs([
+        dcc.Tab(label='Graphics', children=[
 
-    html.H1(children='COVID-19 rates in countries',
-           style={'textAlign': 'center'}),
+            html.H1(children='COVID-19 rates',
+                style={'textAlign': 'center'}),
 
-    html.Label('Countrie(s)'),
+            html.H5('Countries:'),
 
-    dcc.Dropdown(
-        id='selection',
-        options=[{'label': v, 'value': v} for v in countries],
-        value=default,
-        multi=True
-    ),
+            dcc.Dropdown(
+                id='selection',
+                options=[{'label': v, 'value': v} for v in countries],
+                value=default,
+                multi=True
+            ),
 
-    # Output figures
-    ## Daily New
-    dcc.Graph(id='Daily_new'),
-    ## Delivative
-    dcc.Graph(id='d1'),
-    ## Cumulative
-    dcc.Graph(id='cumulative'),
+                 
 
-    html.Br()
+            html.Div([
+                ## Daily New
+                dcc.Graph(id='Daily_new'),
+                ],style= {'width': '49%', 'display': 'inline-block'}),
+            
+            html.Div([
+                ## Derivative
+                dcc.Graph(id='d1')
+            ],style= {'width': '49%', 'display': 'inline-block'}),    
+            
+
+            html.Div([
+            ## Cumulative
+                dcc.Graph(id='cumulative')
+            ],style= {'width': '49%', 'display': 'inline-block'}),        
+
+            html.Br()
+        ]),
+
+        dcc.Tab(label='About', children=[
+            html.Div([
+                dcc.Markdown(mkdwn)
+                ], style={'marginLeft': 300, 'marginRight': 300, 
+                'marginTop': 10, 'marginBottom': 10})
+        ])
+
+    ])
 ])
+
+
+
 
 # Cumulative figure
 #####################################################################################
@@ -112,9 +142,7 @@ def update_cum(default):
                       template="plotly_white",
                       title="Cumulative COVID-19 cases",
                       yaxis_title="Cumulative cases",
-                      xaxis_title="Days from first",
-                      width=1050,
-                      height=600)
+                      xaxis_title="Days from first")
     return fig_cum
 
 
@@ -149,16 +177,14 @@ def update_new(default):
             opacity=0.7,
             marker=dict(size=5, color=colors[i]),
             hovertext=tmp['Date'].dt.date,
-            name=f'{c} smoothed'
+            name=c
         ))
         i += 1
 
     fig_new.update_layout(template="plotly_white",
                       title="New COVID-19 cases",
                       yaxis_title="Daily new",
-                      xaxis_title="Days from first",
-                      width=1050,
-                      height=600)
+                      xaxis_title="Days from first")
     return fig_new
 
 
@@ -183,18 +209,18 @@ def update_d1(default):
             opacity=0.7,
             marker=dict(size=5, color=colors[i]),
             hovertext=tmp['Date'].dt.date,
-            name=f'{c} delta cases'
+            name=c
         ))
         i += 1
 
     fig_d1.update_layout(template="plotly_white",
                       title="First derivative of new COVID-19 cases",
                       yaxis_title="Change in new cases",
-                      xaxis_title="Days from first",
-                      width=1050,
-                      height=600)
+                      xaxis_title="Days from first")
 
     return fig_d1
+
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
