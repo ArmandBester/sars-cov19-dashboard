@@ -6,6 +6,7 @@ Due to the nature of collecting and testing samples and reporting cases the data
 
 The filter used here was introduced by Savitzky and  Golay in 1964 in there paper published in Analytical chemistry (1).  This filter fits low order polynomials over sliding windows of the time series data using least squares regression.  Apart from it's application to extract signal from noise it also offers easy access to the derivatives.
 
+**Data source:** https://github.com/CSSEGISandData/COVID-19.git
 
 **Source:** https://github.com/ArmandBester/sars-cov19-dashboard
 
