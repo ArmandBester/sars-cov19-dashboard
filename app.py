@@ -1,9 +1,10 @@
 import plotly.express as px
 #from jupyter_dash import JupyterDash
 import dash
+import flask
 import dash_core_components as dcc
 import dash_html_components as html
-import dash_bootstrap_components as dbc
+#import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import pandas as pd
 import numpy as np
@@ -60,9 +61,10 @@ newDf, countries, = data_prep()
 colors = px.colors.qualitative.Bold
 
 # Build App
-
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = 'COVID19 dash'
+server = app.server
+
 
 ## Layout
 #####################################################################################
