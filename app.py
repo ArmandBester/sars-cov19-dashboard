@@ -151,15 +151,6 @@ app.layout = html.Div(children=[
 ])
 
 
-
-### Callbacks   ###
-
-# Sliders
-#####################################################################################
-
-
-
-
 # Daily new
 #####################################################################################
 @app.callback(
@@ -198,7 +189,7 @@ def update_new(default, polyOrder, window_length, raw, smooth):
                 hovertext=tmp['Date'].dt.date,
                 name=c
             ))
-            
+
         i += 1
 
     fig_new.update_layout(template="plotly_white",
