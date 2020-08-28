@@ -4,6 +4,7 @@ import dash
 import flask
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_daq as daq
 #import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import pandas as pd
@@ -84,7 +85,12 @@ app.layout = html.Div(children=[
                 options=[{'label': v, 'value': v} for v in countries],
                 value=default,
                 multi=True
-            ),                       
+            ),             
+
+            html.Div([html.Div(daq.ToggleSwitch(label='Smoothed data', id='smooth', value=True,
+                                        labelPosition='bottom'),style={'width': '49%', 'display': 'inline-block'}),
+            html.Div(daq.ToggleSwitch(label='Raw data', id='raw', value=True,
+                              labelPosition='bottom'),style={'width': '49%', 'display': 'inline-block'})]),          
 
             html.Div([
                 html.H6('Choose polyorder:'),
@@ -120,11 +126,12 @@ app.layout = html.Div(children=[
 
                 html.Br(),
 
+
                 ## Derivative
                 dcc.Graph(id='d1')
             ],style= {'width': '49%', 'display': 'inline-block'}),    
             
-
+            
             html.Div([
             ## Cumulative
                 dcc.Graph(id='cumulative')
@@ -159,35 +166,39 @@ app.layout = html.Div(children=[
     Output('Daily_new', 'figure'),
     [Input('selection', 'value'),
     Input('poly-slider', 'value'),
-    Input('window-slider', 'value')])
+    Input('window-slider', 'value'),
+    Input('raw', 'value'),
+    Input('smooth', 'value')])
 
-def update_new(default, polyOrder, window_length):
+def update_new(default, polyOrder, window_length, raw, smooth):
     keep = default
     fig_new = go.Figure()
     i = 0
     for c in keep:
         tmp = newDf[newDf['Country/Region'] == c]
-        fig_new.add_trace(go.Scatter(
-            x=tmp['DaysFromFirstConf'],
-            y=tmp['DailyNewConf'],
-            mode='lines+markers',
-            marker=dict(size=3, color=colors[i]),
-            line = dict(dash='dot'),
-            hovertext=tmp['Date'].dt.date,
-            name=c
-        ))
-
-        fig_new.add_trace(go.Scatter(
-            x=tmp['DaysFromFirstConf'],
-            y=signal.savgol_filter(tmp['DailyNewConf'],
-                                  window_length = window_length,
-                                  polyorder=polyOrder, deriv=0),
-            mode='lines',
-            opacity=0.7,
-            marker=dict(size=5, color=colors[i]),
-            hovertext=tmp['Date'].dt.date,
-            name=c
-        ))
+        if raw == True:            
+            fig_new.add_trace(go.Scatter(
+                x=tmp['DaysFromFirstConf'],
+                y=tmp['DailyNewConf'],
+                mode='lines+markers',
+                marker=dict(size=3, color=colors[i]),
+                line = dict(dash='dot'),
+                hovertext=tmp['Date'].dt.date,
+                name=c
+            ))
+        if smooth == True:
+            fig_new.add_trace(go.Scatter(
+                x=tmp['DaysFromFirstConf'],
+                y=signal.savgol_filter(tmp['DailyNewConf'],
+                                    window_length = window_length,
+                                    polyorder=polyOrder, deriv=0),
+                mode='lines',
+                opacity=0.7,
+                marker=dict(size=5, color=colors[i]),
+                hovertext=tmp['Date'].dt.date,
+                name=c
+            ))
+            
         i += 1
 
     fig_new.update_layout(template="plotly_white",
