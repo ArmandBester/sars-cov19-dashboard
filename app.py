@@ -93,11 +93,13 @@ app.layout = html.Div(children=[
                     min=1,
                     max=10,
                     step=1,
-                    value=2,
+                    value=3,
                     dots=True,
                     marks=dict((i, str(i)) for i in range(1,11,1))
                 ),
-                                
+            
+
+                html.Br(),                
 
                 ## Daily New
                 dcc.Graph(id='Daily_new'),
@@ -115,6 +117,9 @@ app.layout = html.Div(children=[
                     dots=True,
                     marks=dict((i, str(i)) for i in range(7,33,2))
                 ),
+
+                html.Br(),
+
                 ## Derivative
                 dcc.Graph(id='d1')
             ],style= {'width': '49%', 'display': 'inline-block'}),    
@@ -139,6 +144,9 @@ app.layout = html.Div(children=[
 ])
 
 
+
+### Callbacks   ###
+
 # Sliders
 #####################################################################################
 
@@ -149,9 +157,11 @@ app.layout = html.Div(children=[
 #####################################################################################
 @app.callback(
     Output('Daily_new', 'figure'),
-    [Input('selection', 'value')])
+    [Input('selection', 'value'),
+    Input('poly-slider', 'value'),
+    Input('window-slider', 'value')])
 
-def update_new(default, polyOrder=2):
+def update_new(default, polyOrder, window_length):
     keep = default
     fig_new = go.Figure()
     i = 0
@@ -161,7 +171,7 @@ def update_new(default, polyOrder=2):
             x=tmp['DaysFromFirstConf'],
             y=tmp['DailyNewConf'],
             mode='lines+markers',
-            marker=dict(size=5, color=colors[i]),
+            marker=dict(size=3, color=colors[i]),
             line = dict(dash='dot'),
             hovertext=tmp['Date'].dt.date,
             name=c
@@ -170,7 +180,7 @@ def update_new(default, polyOrder=2):
         fig_new.add_trace(go.Scatter(
             x=tmp['DaysFromFirstConf'],
             y=signal.savgol_filter(tmp['DailyNewConf'],
-                                  window_length = 21,
+                                  window_length = window_length,
                                   polyorder=polyOrder, deriv=0),
             mode='lines',
             opacity=0.7,
@@ -191,9 +201,11 @@ def update_new(default, polyOrder=2):
 #####################################################################################
 @app.callback(
     Output('d1', 'figure'),
-    [Input('selection', 'value')])
+    [Input('selection', 'value'),
+    Input('poly-slider', 'value'),
+    Input('window-slider', 'value')])
 
-def update_d1(default, polyOrder=2):
+def update_d1(default, polyOrder, window_length):
     keep = default
     fig_d1 = go.Figure()
     i = 0
@@ -202,7 +214,7 @@ def update_d1(default, polyOrder=2):
         fig_d1.add_trace(go.Scatter(
             x=tmp['DaysFromFirstConf'],
             y=signal.savgol_filter(tmp['DailyNewConf'],
-                                  window_length = 21,
+                                  window_length = window_length,
                                   polyorder=polyOrder, deriv=1),
             mode='lines+markers',
             opacity=0.7,
