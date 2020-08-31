@@ -75,17 +75,19 @@ app.layout = html.Div(children=[
     dcc.Tabs([
         dcc.Tab(label='Graphics', children=[
 
-            html.H3(children='COVID-19 rates',
+            html.H5(children='COVID-19 rates',
                 style={'textAlign': 'center'}),
 
-            html.H5('Countries:'),
+            html.H6('Countries:'),
 
             dcc.Dropdown(
                 id='selection',
                 options=[{'label': v, 'value': v} for v in countries],
                 value=default,
                 multi=True
-            ),             
+            ),       
+
+            html.Br(),      
 
             html.Div([html.Div(daq.ToggleSwitch(label='Smoothed data', id='smooth', value=True,
                                         labelPosition='bottom'),style={'width': '49%', 'display': 'inline-block'}),
@@ -93,7 +95,7 @@ app.layout = html.Div(children=[
                               labelPosition='bottom'),style={'width': '49%', 'display': 'inline-block'})]),          
 
             html.Div([
-                html.H6('Choose polyorder:'),
+                html.P('Choose polyorder:'),
                 dcc.Slider(
                     id='poly-slider',
                     min=1,
@@ -113,7 +115,7 @@ app.layout = html.Div(children=[
                 ],style= {'width': '49%', 'display': 'inline-block'}),
             
             html.Div([
-                html.H6('Choose window:'),
+                html.P('Choose window:'),
                 dcc.Slider(
                     id='window-slider',
                     min=7,
