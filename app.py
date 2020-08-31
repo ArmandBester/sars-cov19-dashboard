@@ -174,7 +174,7 @@ def update_new(default, polyOrder, window_length, raw, smooth):
                 x=tmp['DaysFromFirstConf'],
                 y=tmp['DailyNewConf'],
                 mode='lines+markers',
-                marker=dict(size=3, color=colors[i]),
+                marker=dict(size=5, color=colors[i]),
                 line = dict(dash='dot'),
                 hovertext=tmp['Date'].dt.date,
                 name=c
@@ -197,7 +197,8 @@ def update_new(default, polyOrder, window_length, raw, smooth):
     fig_new.update_layout(template="plotly_white",
                       title="New COVID-19 cases",
                       yaxis_title="Daily new",
-                      xaxis_title="Days from first")
+                      xaxis_title="Days from first",
+                      uirevision=True)
     return fig_new
 
 
@@ -231,7 +232,8 @@ def update_d1(default, polyOrder, window_length):
     fig_d1.update_layout(template="plotly_white",
                       title="First derivative of new COVID-19 cases",
                       yaxis_title="Change in new cases",
-                      xaxis_title="Days from first")
+                      xaxis_title="Days from first",
+                      uirevision=True)
 
     return fig_d1
 
@@ -261,7 +263,8 @@ def update_cum(default):
                       template="plotly_white",
                       title="Cumulative COVID-19 cases",
                       yaxis_title="Cumulative cases",
-                      xaxis_title="Days from first")
+                      xaxis_title="Days from first",
+                      uirevision=True)
     return fig_cum
 
 if __name__ == '__main__':
