@@ -174,8 +174,9 @@ def update_new(default, polyOrder, window_length, raw, smooth):
                 x=tmp['DaysFromFirstConf'],
                 y=tmp['DailyNewConf'],
                 mode='lines+markers',
-                marker=dict(size=5, color=colors[i]),
-                line = dict(dash='dot'),
+                marker=dict(size=4, color=colors[i]),
+                line = dict(width=1),
+                opacity=0.6,
                 hovertext=tmp['Date'].dt.date,
                 name=c
             ))
@@ -186,8 +187,7 @@ def update_new(default, polyOrder, window_length, raw, smooth):
                                     window_length = window_length,
                                     polyorder=polyOrder, deriv=0),
                 mode='lines',
-                opacity=0.7,
-                marker=dict(size=5, color=colors[i]),
+                line=dict(width=3, color=colors[i]),
                 hovertext=tmp['Date'].dt.date,
                 name=c
             ))
