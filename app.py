@@ -53,7 +53,7 @@ def data_prep():
         tmp['DaysFromFirstConf'] = dateList
         tmp['DailyNewConf'] = tmp['Confirmed'].diff()
 
-        newDf = newDf.append(tmp)
+        newDf = newDf._append(tmp)
     #placesDict = [{'label': k, 'value': k} for k in countries]
     return newDf, countries
 
